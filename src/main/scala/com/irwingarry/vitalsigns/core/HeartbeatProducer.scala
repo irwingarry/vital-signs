@@ -1,8 +1,7 @@
-package com.irwingarry.vitalsigns.producers
+package com.irwingarry.vitalsigns.core
 
 import java.util.Properties
 
-import com.irwingarry.vitalsigns.core.Contraction
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 import org.apache.kafka.common.serialization.StringSerializer
 
@@ -22,5 +21,11 @@ class HeartbeatProducer {
   }
 
   def send(contraction: Contraction) =
-    producer.send(new ProducerRecord(topic, key, contraction.toString))
+    producer.send(
+      new ProducerRecord(
+        topic,
+        key,
+        objectMapper.writeValueAsString(contraction)
+      )
+    )
 }
